@@ -13,15 +13,8 @@ short numberOfDaysInMonth(short year, short month)
   {
     return 0;
   }
-  if (month == 2)
-  {
-    return isLeapYear(year) ? 29 : 28;
-  }
-  if (month == 4 || month == 6 || month == 9 || month == 11)
-  {
-    return 30;
-  }
-  return 31;
+  short days[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  return (month == 2) ? isLeapYear(year) ? 29 : 28 : days[month - 1];
 }
 short numberOfHoursInMonth(short year, short month)
 {
@@ -46,6 +39,6 @@ void prshortYearDetails(short year, short month)
 
 int main()
 {
-  prshortYearDetails(1991, 4);
+  prshortYearDetails(4245, 2);
   return 0;
 }
