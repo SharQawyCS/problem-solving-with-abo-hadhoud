@@ -190,6 +190,7 @@ short numberOfDaysFromYear(short year, short month, short day)
   }
   return days;
 }
+
 stDate dateByDayOrder(short dayOrder, short year)
 {
   stDate neededDate;
@@ -577,4 +578,81 @@ stDate decreaseDateByOneMillennim(stDate date)
 {
   date.year -= 1000;
   return date;
+}
+
+// Extra
+//  1
+int weekdayOfDate(stDate date)
+{
+  short a = (14 - date.month) / 12;
+  short y = date.year - a;
+  short m = date.month + 12 * a - 2;
+  // Zero is Sunday
+  return (date.day + y + (y / 4) - (y / 100) + (y / 400) + ((31 * m) / 12)) % 7;
+}
+// 2
+bool isEndOfWeek(stDate date)
+{
+  return weekdayOfDate(date) == 6;
+}
+// 3
+bool isWeekend(stDate date)
+{
+  return weekdayOfDate(date) == 6 || weekdayOfDate(date) == 5;
+}
+// 4
+bool isBusinessDay(stDate date)
+{
+  return !isWeekend(date);
+}
+// 5
+short daysUntilEndOfWeek(stDate date)
+{
+  return 6 - weekdayOfDate(date);
+}
+// 6
+short daysUntilEndOfMonth(stDate date)
+{
+  return numberOfDaysInMonth(date.year, date.month) - date.day;
+}
+// 7
+short daysUntilEndOfYear(stDate date)
+{
+  return numberOfDaysInYear(date.year) - numberOfDaysFromYear(date.year, date.month, date.day);
+}
+
+stDate calculateVacationReturnDate(stDate startDate, short vacationDays)
+{
+  short weekendCounter = 0;
+  while (isWeekend(startDate))
+  {
+    startDate = increaseDateByOneDay(startDate);
+  }
+
+  for (short i = 1; i <= vacationDays + weekendCounter; ++i)
+  {
+    if (isWeekend(startDate))
+      weekendCounter++;
+    startDate = increaseDateByOneDay(startDate);
+  }
+
+  while (isWeekend(startDate))
+  {
+    startDate = increaseDateByOneDay(startDate);
+  }
+  return startDate;
+}
+
+short calcActualVacation(stDate date_1, stDate date_2)
+{
+  short vacationDays = 0;
+  while (isDate1BeforeDate2(date_1, date_2))
+  {
+    if (!isWeekend(date_1))
+    {
+      vacationDays++;
+    }
+    date_1 = increaseDateByOneDay(date_1);
+  }
+  return vacationDays;
 }
