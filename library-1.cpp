@@ -810,6 +810,19 @@ string joinString(string arr[], int length, string delim)
   return sentence;
 }
 
+//
+string ReplaceWordInString(string S1, string StringToReplace, string sRepalceTo)
+{
+  short pos = S1.find(StringToReplace);
+  while (pos != std::string::npos)
+  {
+    S1 = S1.replace(pos, StringToReplace.length(), sRepalceTo);
+    pos = S1.find(StringToReplace); //
+  }
+  return S1;
+}
+//
+
 string joinString(vector<string> vString, string delim)
 {
   string sentence;

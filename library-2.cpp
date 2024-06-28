@@ -219,7 +219,19 @@ bool isDate1EqualDate2(stDate date_1, stDate date_2)
 {
   return (date_1.year == date_2.year) && (date_1.month == date_2.month) && (date_1.day == date_2.day);
 }
+bool isDate1AfterDate2(stDate date_1, stDate date_2)
+{
+  return !isDate1BeforeDate2(date_1, date_2) && !isDate1EqualDate2(date_1, date_2);
+}
+short date1BeforeEqualAfterDate2(stDate date_1, stDate date_2)
+{
+  if (isDate1BeforeDate2(date_1, date_2))
+    return -1;
+  if (isDate1EqualDate2(date_1, date_2))
+    return 0;
 
+  return 1;
+}
 bool isLastDayInMonth(stDate date)
 {
   return date.day == numberOfDaysInMonth(date.year, date.month);
@@ -655,4 +667,17 @@ short calcActualVacation(stDate date_1, stDate date_2)
     date_1 = increaseDateByOneDay(date_1);
   }
   return vacationDays;
+}
+
+struct stPeriod
+{
+  stDate startDate, endDate;
+};
+int PeriodLengthInDays(stPeriod Period, bool IncludeEndDate = false)
+{
+  return diffBetweenTwoDates(Period.startDate, Period.endDate, IncludeEndDate);
+}
+bool isDateInPeriod(stDate Date, stPeriod Period)
+{
+  return !(isDate1BeforeDate2(Date, Period.startDate) || isDate1AfterDate2(Date, Period.endDate));
 }
